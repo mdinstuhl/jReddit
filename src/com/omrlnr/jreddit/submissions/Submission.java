@@ -27,11 +27,7 @@ public class Submission extends Thing {
 	private URL url;
 
 	public Submission(User user, String fullName) {
-		if (fullName.startsWith("t3_"))
-			fullName = fullName.replaceFirst("t3_", "");
-
-		this.user = user;
-		this.fullName = "t3_" + fullName;
+		this(user, fullName, url);
 	}
 
 	public Submission(User user, String fullName, URL url) {
