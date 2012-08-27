@@ -294,8 +294,9 @@ public class User extends Thing {
 			Runtime.getRuntime().exit(-1);
 		}
 
-		JSONObject jsonObject = Utils.get("", new URL(
+		Object obj = Utils.get("", new URL(
 				"http://www.reddit.com/api/me.json"), getCookie());
+		JSONObject jsonObject = (JSONObject) obj;
 		return (JSONObject) jsonObject.get("data");
 	}
 

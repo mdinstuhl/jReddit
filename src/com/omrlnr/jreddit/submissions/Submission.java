@@ -27,7 +27,7 @@ public class Submission extends Thing {
 	private URL url;
 
 	public Submission(User user, String fullName) {
-		this(user, fullName, url);
+//		this(user, fullName, url);
 	}
 
 	public Submission(User user, String fullName, URL url) {
