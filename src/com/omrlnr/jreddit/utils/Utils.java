@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import org.json.simple.JSONArray;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -13,17 +14,18 @@ import org.json.simple.parser.ParseException;
 
 /**
  * This class contains (or will contain) various utilities for jReddit.
- * 
+ *
  * @author <a href="http://www.omrlnr.com">Omer Elnour</a>
  */
 public class Utils {
 	// Edit this!
+
 	private static String userAgent = "Omer's Reddit API Java Wrapper";
 
 	/**
 	 * This function is here because I do this same request a hundred times
 	 * throughout jReddit and I wanted to inline the function somehow.
-	 * 
+	 *
 	 * It basically submits a POST request and returns a JSON object that
 	 * corresponds to it.
 	 */
@@ -56,7 +58,7 @@ public class Utils {
 	 * This function submits a GET request and returns a JSON object that
 	 * corresponds to it.
 	 */
-	public static JSONObject get(String apiParams, URL url, String cookie)
+	public static Object get(String apiParams, URL url, String cookie)
 			throws IOException, ParseException {
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		connection.setDoOutput(true);
@@ -66,11 +68,17 @@ public class Utils {
 		connection.setRequestProperty("User-Agent", userAgent);
 
 		JSONParser parser = new JSONParser();
-		Object object = parser.parse(new BufferedReader(new InputStreamReader(
+		return parser.parse(new BufferedReader(new InputStreamReader(
 				connection.getInputStream())).readLine());
-		JSONObject jsonObject = (JSONObject) object;
-
-		return jsonObject;
+//		JSONObject jsonObject = null;
+//		try {
+//			jsonObject = (JSONObject) object;
+//		} catch (ClassCastException e) {
+//			JSONArray jsonArray = (JSONArray) object;
+//
+//			jsonObject = (JSONObject) jsonArray.get(0);
+//		}
+//		return jsonObject;
 	}
 
 	public static String getUserAgent() {
