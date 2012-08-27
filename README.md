@@ -91,7 +91,7 @@ Submit a link and self post
 	
 List the subreddits that make up the default front page of reddit
 
-import com.omrlnr.jreddit.submissions.Submission;
+	import com.omrlnr.jreddit.submissions.Submission;
 	import com.omrlnr.jreddit.user.User;
 	import com.omrlnr.jreddit.subreddit.Subreddit;
 	import com.omrlnr.jreddit.subreddit.Subreddits;
