@@ -9,6 +9,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
 import com.omrlnr.jreddit.Thing;
+import com.omrlnr.jreddit.submissions.Submission;
 import com.omrlnr.jreddit.utils.Utils;
 import java.util.List;
 
@@ -24,15 +25,17 @@ public class User extends Thing {
 	// Comments made by this user
 	private List<Comment> comments;
 	// Links submitted by this user
-	private List<String> submissions;
+	private List<Submission> submissions;
 	// Links like by this user
 	private List<String> liked;
 	// Links disliked by this user
 	private List<String> disliked;
 	// Links hidden by this user
 	private List<String> hidden;
-	// How much karma this user has
-	private Integer karma;
+	// How much link karma this user has
+	private Integer linkKarma;
+	// How much comment karma this user has
+	private Integer commentKarma;
 	// When the account was created
 	private String createdDate;
 
@@ -144,30 +147,31 @@ public class User extends Thing {
 	}
 
 	/**
-	 * This function returns the amount of link karma this user has. <br />
+	 * This function returns the amount of link linkKarma this user has. <br />
 	 * Returns int because I doubt anyone has more than 2,147,483,647 link
-	 * karma.
+	 * linkKarma.
 	 *
 	 * @return Link Karma
 	 * @throws NumberFormatException If the "link_karma" property isn't an
-	 * inteher
+	 * integer
 	 * @throws IOException If connection fails
 	 * @throws ParseException If JSON parsing fails
 	 */
 	public int linkKarma() throws IOException, ParseException {
-		// Only send a new request if we don't already have the link karma.
-		if (karma == null) {
-			karma = Integer.parseInt(info().get("link_karma").toString());
+		// Only send a new request if we don't already have the link linkKarma.
+		if (linkKarma == null) {
+			// Safely convert to a string 
+			linkKarma = Integer.parseInt(toString(info().get("link_karma")));
 		}
-		
-		// Return the link karma
-		return karma;
+
+		// Return the link linkKarma
+		return linkKarma;
 	}
 
 	/**
-	 * This function returns the amount of comment karma this user has. <br />
-	 * Returns int because I doubt anyone has more than 2,147,483,647 comment
-	 * karma.
+	 * This function returns the amount of comment linkKarma this user has. <br
+	 * /> Returns int because I doubt anyone has more than 2,147,483,647 comment
+	 * linkKarma.
 	 *
 	 * @return Comment Karma
 	 * @throws NumberFormatException If the "link_karma" property isn't an
@@ -176,7 +180,14 @@ public class User extends Thing {
 	 * @throws ParseException If JSON parsing fails
 	 */
 	public int commentKarma() throws IOException, ParseException {
-		return Integer.parseInt(info().get("comment_karma").toString());
+		// Only send a new request if we don't already have the link linkKarma.
+		if (commentKarma == null) {
+			// Safely convert to a string
+			commentKarma = Integer.parseInt(toString(info().get("comment_karma")));
+		}
+
+		// Return comment karma
+		return commentKarma;
 	}
 
 	/**
@@ -314,10 +325,10 @@ public class User extends Thing {
 	}
 
 	/**
-	 * Returns a list of comments made by this user.
+	 * Returns a list of submissions made by this user.
 	 *
 	 * @return
-	 * <code>List</code> of comments made by this user.
+	 * <code>List</code> of submissions made by this user.
 	 * @author Benjamin Jakobus
 	 */
 	public List<Comment> getComments() {
@@ -328,7 +339,45 @@ public class User extends Thing {
 	}
 
 	/**
-	 * Returns a list of comments made by this user.
+	 * Returns misc info about the user (which consists of comment karma, mod
+	 * mail identifier, created timestamp, gold member identifier, mod
+	 * identifier, link karma and mail identifier).
+	 *
+	 * @param username	The username of the user whose account overview you want
+	 * to retrieve.
+	 * @param cookie	The cookie associated with the account that you used to
+	 * connect to reddit.
+	 * @return	Misc info about the user.
+	 *
+	 * @author Benjamin Jakobus
+	 */
+	public static UserInfo about(String username, String cookie) {
+		// Wrapper used to hold misc account info
+		UserInfo info = null;
+		try {
+			// Send GET request to get the account overview
+			JSONObject object = (JSONObject) Utils.get("", new URL(
+					"http://www.reddit.com/user/" + username + "/about.json"), cookie);
+			JSONObject data = (JSONObject) object.get("data");
+
+			// Init account info wrapper
+			info = new UserInfo(Integer.parseInt(toString(data.get("comment_karma"))),
+					Integer.parseInt(toString(data.get("link_karma"))),
+					Float.parseFloat(toString(data.get("created_utc"))),
+					Boolean.parseBoolean(toString(data.get("is_gold"))),
+					Boolean.parseBoolean(toString(data.get("is_mod"))),
+					Boolean.parseBoolean(toString(data.get("has_mail"))),
+					Boolean.parseBoolean(toString(data.get("has_mod_mail"))));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// Return info
+		return info;
+	}
+
+	/**
+	 * Returns a list of submissions made by this user.
 	 *
 	 * @param username	The username of the user whose account overview you want
 	 * to retrieve.
@@ -340,7 +389,7 @@ public class User extends Thing {
 	 * @author Benjamin Jakobus
 	 */
 	public static List<Comment> getComments(String username, String cookie) {
-		// List of comments made by this user
+		// List of submissions made by this user
 		List<Comment> comments = new ArrayList<Comment>(500);
 		try {
 			// Send GET request to get the account overview
@@ -362,15 +411,68 @@ public class User extends Thing {
 						Integer.parseInt(toString(obj.get("ups"))),
 						Integer.parseInt(toString(obj.get("downs"))));
 
-				// Add it to the comments list
+				// Add it to the submissions list
 				comments.add(c);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		// Return the comments
+		// Return the submissions
 		return comments;
+	}
+
+	/**
+	 * Returns a list of submissions made by this user.
+	 *
+	 * @param username	The username of the user whose account overview you want
+	 * to retrieve.
+	 * @param cookie	The cookie associated with the account that you used to
+	 * connect to reddit.
+	 * @return
+	 * <code>List</code> of submissions made by this user.
+	 *
+	 * @author Benjamin Jakobus
+	 */
+	public static List<Submission> getSubmissions(String username, String cookie) {
+		// List of submissions made by this user
+		List<Submission> submissions = new ArrayList<Submission>(500);
+		try {
+			// Send GET request to get the account overview
+			JSONObject object = (JSONObject) Utils.get("", new URL(
+					"http://www.reddit.com/user/" + username + "/submitted.json"), cookie);
+			JSONObject data = (JSONObject) object.get("data");
+			JSONArray children = (JSONArray) data.get("children");
+
+			JSONObject obj;
+
+			Submission s;
+
+			for (int i = 0; i < children.size(); i++) {
+				// Get the object containing the comment
+				obj = (JSONObject) children.get(i);
+				obj = (JSONObject) obj.get("data");
+
+				// Create a new submission
+				s = new Submission();
+				s.setAuthor(toString(obj.get("author")));
+				s.setTitle(toString(obj.get("title")));
+				s.setOver18(Boolean.parseBoolean(toString(obj.get("over_18"))));
+				s.setCreatedUTC(Float.parseFloat(toString(obj.get("created_utc"))));
+				s.setDownVotes(Integer.parseInt(toString(obj.get("downs"))));
+				s.setName(toString(obj.get("name")));
+				s.setScore(Integer.parseInt(toString(obj.get("score"))));
+				s.setUpVotes(Integer.parseInt(toString(obj.get("ups"))));
+				s.setNumComments(Integer.parseInt(toString(obj.get("num_comments"))));
+				// Add it to the submissions list
+				submissions.add(s);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// Return the submissions
+		return submissions;
 	}
 
 	/**

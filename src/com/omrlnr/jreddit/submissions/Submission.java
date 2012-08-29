@@ -25,10 +25,70 @@ public class Submission extends Thing {
 	 * The path to this submission
 	 */
 	private URL url;
+	
+	private Float createdUTC;
+	private String author;
+	private String title;
+	private Boolean over18;
+	private String name;
+	private Integer numComments;
+	private String subreddit;
+	private Integer upVotes;
+	private Integer downVotes;
+	private Integer score;
+
+	public Submission() {
+	}
 
 	public Submission(User user, String fullName) {
 //		this(user, fullName, url);
 	}
+
+	public void setScore(Integer score) {
+		this.score = score;
+	}
+
+	public void setAuthor(String author) {
+		this.author = author;
+	}
+
+	public void setCreatedUTC(float createdUTC) {
+		this.createdUTC = createdUTC;
+	}
+
+	public void setDownVotes(int downVotes) {
+		this.downVotes = downVotes;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setNumComments(int numComments) {
+		this.numComments = numComments;
+	}
+
+	public void setOver18(boolean over18) {
+		this.over18 = over18;
+	}
+
+	public void setSubreddit(String subreddit) {
+		this.subreddit = subreddit;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public void setUpVotes(int upVotes) {
+		this.upVotes = upVotes;
+	}
+
+	public void setUrl(URL url) {
+		this.url = url;
+	}
+
+	
 
 	public Submission(User user, String fullName, URL url) {
 		if (fullName.startsWith("t3_"))
@@ -204,7 +264,11 @@ public class Submission extends Thing {
 		if (url == null)
 			throw new IOException("URL needs to be present");
 
-		return Integer.parseInt(info(url).get("num_comments").toString());
+		// Only send a request if number of comments hasn't already been fetched
+		if (numComments == null) {
+			numComments = Integer.parseInt(info(url).get("num_comments").toString());
+		}
+		return numComments;
 	}
 
 	/**
