@@ -32,7 +32,7 @@ public class User extends Thing {
 	// Links hidden by this user
 	private List<String> hidden;
 	// How much karma this user has
-	private int karma;
+	private Integer karma;
 	// When the account was created
 	private String createdDate;
 
@@ -155,7 +155,13 @@ public class User extends Thing {
 	 * @throws ParseException If JSON parsing fails
 	 */
 	public int linkKarma() throws IOException, ParseException {
-		return Integer.parseInt(info().get("link_karma").toString());
+		// Only send a new request if we don't already have the link karma.
+		if (karma == null) {
+			karma = Integer.parseInt(info().get("link_karma").toString());
+		}
+		
+		// Return the link karma
+		return karma;
 	}
 
 	/**
@@ -355,7 +361,7 @@ public class User extends Thing {
 						toString(obj.get("created_utc")), toString(obj.get("replies")),
 						Integer.parseInt(toString(obj.get("ups"))),
 						Integer.parseInt(toString(obj.get("downs"))));
-				
+
 				// Add it to the comments list
 				comments.add(c);
 			}
@@ -366,14 +372,14 @@ public class User extends Thing {
 		// Return the comments
 		return comments;
 	}
-	
+
 	/**
-	 * Safely converts an object into string (used because sometimes JSONObject's get() method returns
-	 * null).
-	 * 
-	 * @param obj		The object to convert.
-	 * @return			The string.
-	 * 
+	 * Safely converts an object into string (used because sometimes
+	 * JSONObject's get() method returns null).
+	 *
+	 * @param obj	The object to convert.
+	 * @return	The string.
+	 *
 	 * @author Benjamin Jakobus
 	 */
 	private static String toString(Object obj) {
