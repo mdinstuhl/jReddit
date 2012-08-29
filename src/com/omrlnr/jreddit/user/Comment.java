@@ -93,7 +93,7 @@ public class Comment {
 	/**
 	 * Sets the comment.
 	 *
-	 * @param	The comment.
+	 * @param comment	The comment.
 	 *
 	 * @author Benjamin Jakobus
 	 */
@@ -104,7 +104,7 @@ public class Comment {
 	/**
 	 * Sets the edited timestamp.
 	 *
-	 * @param	The edited timestamp.
+	 * @param edited	The edited timestamp.
 	 *
 	 * @author Benjamin Jakobus
 	 */
@@ -115,7 +115,7 @@ public class Comment {
 	/**
 	 * Sets the UTC created timestamp.
 	 *
-	 * @param	The UTC created timestamp.
+	 * @param created	The UTC created timestamp.
 	 *
 	 * @author Benjamin Jakobus
 	 */
@@ -126,7 +126,7 @@ public class Comment {
 	/**
 	 * Sets the replies.
 	 *
-	 * @param	The replies.
+	 * @param replies	The replies.
 	 *
 	 * @author Benjamin Jakobus
 	 */
@@ -137,7 +137,7 @@ public class Comment {
 	/**
 	 * Sets the downvotes.
 	 *
-	 * @param	The downvotes.
+	 * @param downvotes	The downvotes.
 	 *
 	 * @author Benjamin Jakobus
 	 */
@@ -148,7 +148,7 @@ public class Comment {
 	/**
 	 * Sets the upvotes.
 	 *
-	 * @param	The upvotes.
+	 * @param upvotes	The upvotes.
 	 *
 	 * @author Benjamin Jakobus
 	 */
