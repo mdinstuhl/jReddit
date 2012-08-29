@@ -236,10 +236,20 @@ public class User extends Thing {
 		return Boolean.parseBoolean(info().get("has_mod_mail").toString());
 	}
 
+	/**
+	 * Returns the user's username.
+	 * 
+	 * @return		The user's username.
+	 */
 	public String getUsername() {
 		return username;
 	}
 
+	/**
+	 * Returns the user's password.
+	 * 
+	 * @return		The user's password.
+	 */
 	public String getPassword() {
 		return password;
 	}
