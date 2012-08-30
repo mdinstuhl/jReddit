@@ -310,7 +310,7 @@ public class User extends Thing {
 	 * @author Benjamin Jakobus
 	 */
 	public List<Comment> comments() {
-		// Return liked
+		// Return disliked
 		return User.comments(username, getCookie());
 	}
 
@@ -360,7 +360,7 @@ public class User extends Thing {
 	 * @param cookie	The cookie associated with the account that you used to
 	 * connect to reddit.
 	 * @return
-	 * <code>List</code> of liked made by this user.
+	 * <code>List</code> of disliked made by this user.
 	 *
 	 * @author Benjamin Jakobus
 	 */
@@ -452,9 +452,9 @@ public class User extends Thing {
 	}
 
 	/**
-	 * Returns a list of submissions that this user liked.
+	 * Returns a list of submissions that this user disliked.
 	 *
-	 * @return	List of liked links.
+	 * @return	List of disliked links.
 	 * @author Benjamin Jakobus
 	 */
 	public List<Submission> liked() {
@@ -494,6 +494,51 @@ public class User extends Thing {
 
 		// Return the submissions
 		return liked;
+	}
+	
+	/**
+	 * Returns a list of submissions that this user disliked.
+	 *
+	 * @return	List of disliked links.
+	 * @author Benjamin Jakobus
+	 */
+	public List<Submission> disliked() {
+		// List of submissions made by this user
+		List<Submission> disliked = new ArrayList<Submission>(500);
+		try {
+			// Send GET request to get the account overview
+			JSONObject object = (JSONObject) Utils.get("", new URL(
+					"http://www.reddit.com/user/" + username + "/disliked.json"), cookie);
+			JSONObject data = (JSONObject) object.get("data");
+			JSONArray children = (JSONArray) data.get("children");
+
+			JSONObject obj;
+			Submission s;
+			for (int i = 0; i < children.size(); i++) {
+				// Get the object containing the comment
+				obj = (JSONObject) children.get(i);
+				obj = (JSONObject) obj.get("data");
+
+				// Create a new comment
+				s = new Submission();
+				s.setAuthor(toString(obj.get("author")));
+				s.setTitle(toString(obj.get("title")));
+				s.setOver18(Boolean.parseBoolean(toString(obj.get("over_18"))));
+				s.setCreatedUTC(Float.parseFloat(toString(obj.get("created_utc"))));
+				s.setDownVotes(Integer.parseInt(toString(obj.get("downs"))));
+				s.setName(toString(obj.get("name")));
+				s.setScore(Integer.parseInt(toString(obj.get("score"))));
+				s.setUpVotes(Integer.parseInt(toString(obj.get("ups"))));
+				s.setNumComments(Integer.parseInt(toString(obj.get("num_comments"))));
+				// Add it to the submissions list
+				disliked.add(s);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// Return the submissions
+		return disliked;
 	}
 
 	/**
