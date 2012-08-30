@@ -22,8 +22,6 @@ public class User extends Thing {
 
 	private String username, password;
 	private String modhash, cookie;
-	// Links disliked by this user
-	private List<String> disliked;
 	// Links hidden by this user
 	private List<String> hidden;
 	// When the account was created
@@ -494,6 +492,51 @@ public class User extends Thing {
 
 		// Return the submissions
 		return liked;
+	}
+	
+	/**
+	 * Returns a list of submissions that this user chose to hide.
+	 *
+	 * @return	List of disliked links.
+	 * @author Benjamin Jakobus
+	 */
+	public List<Submission> hidden() {
+		// List of submissions made by this user
+		List<Submission> hidden = new ArrayList<Submission>(500);
+		try {
+			// Send GET request to get the account overview
+			JSONObject object = (JSONObject) Utils.get("", new URL(
+					"http://www.reddit.com/user/" + username + "/hidden.json"), cookie);
+			JSONObject data = (JSONObject) object.get("data");
+			JSONArray children = (JSONArray) data.get("children");
+
+			JSONObject obj;
+			Submission s;
+			for (int i = 0; i < children.size(); i++) {
+				// Get the object containing the comment
+				obj = (JSONObject) children.get(i);
+				obj = (JSONObject) obj.get("data");
+
+				// Create a new comment
+				s = new Submission();
+				s.setAuthor(toString(obj.get("author")));
+				s.setTitle(toString(obj.get("title")));
+				s.setOver18(Boolean.parseBoolean(toString(obj.get("over_18"))));
+				s.setCreatedUTC(Float.parseFloat(toString(obj.get("created_utc"))));
+				s.setDownVotes(Integer.parseInt(toString(obj.get("downs"))));
+				s.setName(toString(obj.get("name")));
+				s.setScore(Integer.parseInt(toString(obj.get("score"))));
+				s.setUpVotes(Integer.parseInt(toString(obj.get("ups"))));
+				s.setNumComments(Integer.parseInt(toString(obj.get("num_comments"))));
+				// Add it to the submissions list
+				hidden.add(s);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// Return the submissions
+		return hidden;
 	}
 	
 	/**
