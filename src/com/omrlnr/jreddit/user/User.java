@@ -22,10 +22,6 @@ public class User extends Thing {
 
 	private String username, password;
 	private String modhash, cookie;
-	// Links hidden by this user
-	private List<String> hidden;
-	// When the account was created
-	private String createdDate;
 
 	public User(String username, String password) {
 		this.username = username;
@@ -309,7 +305,7 @@ public class User extends Thing {
 	 */
 	public List<Comment> comments() {
 		// Return disliked
-		return User.comments(username, getCookie());
+		return User.comments(username);
 	}
 
 	/**
@@ -317,21 +313,20 @@ public class User extends Thing {
 	 * mail identifier, created timestamp, gold member identifier, mod
 	 * identifier, link karma and mail identifier).
 	 *
-	 * @param username	The username of the user whose account overview you want
+	 * @param username	The username of the user whose account info you want
 	 * to retrieve.
-	 * @param cookie	The cookie associated with the account that you used to
-	 * connect to reddit.
+	 * 
 	 * @return	Misc info about the user.
 	 *
 	 * @author Benjamin Jakobus
 	 */
-	public static UserInfo about(String username, String cookie) {
+	public static UserInfo about(String username) {
 		// Wrapper used to hold misc account info
 		UserInfo info = null;
 		try {
 			// Send GET request to get the account overview
 			JSONObject object = (JSONObject) Utils.get("", new URL(
-					"http://www.reddit.com/user/" + username + "/about.json"), cookie);
+					"http://www.reddit.com/user/" + username + "/about.json"), null);
 			JSONObject data = (JSONObject) object.get("data");
 
 			// Init account info wrapper
@@ -353,22 +348,20 @@ public class User extends Thing {
 	/**
 	 * Returns a list of submissions made by this user.
 	 *
-	 * @param username	The username of the user whose account overview you want
+	 * @param username	The username of the user whose comments you want
 	 * to retrieve.
-	 * @param cookie	The cookie associated with the account that you used to
-	 * connect to reddit.
 	 * @return
 	 * <code>List</code> of disliked made by this user.
 	 *
 	 * @author Benjamin Jakobus
 	 */
-	public static List<Comment> comments(String username, String cookie) {
+	public static List<Comment> comments(String username) {
 		// List of submissions made by this user
 		List<Comment> comments = new ArrayList<Comment>(500);
 		try {
 			// Send GET request to get the account overview
 			JSONObject object = (JSONObject) Utils.get("", new URL(
-					"http://www.reddit.com/user/" + username + "/comments.json"), cookie);
+					"http://www.reddit.com/user/" + username + "/comments.json"), null);
 			JSONObject data = (JSONObject) object.get("data");
 			JSONArray children = (JSONArray) data.get("children");
 
@@ -399,22 +392,20 @@ public class User extends Thing {
 	/**
 	 * Returns a list of submissions made by this user.
 	 *
-	 * @param username	The username of the user whose account overview you want
-	 * to retrieve.
-	 * @param cookie	The cookie associated with the account that you used to
-	 * connect to reddit.
+	 * @param username	The username of the user whose submissions you want
+	 *					to retrieve.
 	 * @return
 	 * <code>List</code> of submissions made by this user.
 	 *
 	 * @author Benjamin Jakobus
 	 */
-	public static List<Submission> submissions(String username, String cookie) {
+	public static List<Submission> submissions(String username) {
 		// List of submissions made by this user
 		List<Submission> submissions = new ArrayList<Submission>(500);
 		try {
 			// Send GET request to get the account overview
 			JSONObject object = (JSONObject) Utils.get("", new URL(
-					"http://www.reddit.com/user/" + username + "/submitted.json"), cookie);
+					"http://www.reddit.com/user/" + username + "/submitted.json"), null);
 			JSONObject data = (JSONObject) object.get("data");
 			JSONArray children = (JSONArray) data.get("children");
 
