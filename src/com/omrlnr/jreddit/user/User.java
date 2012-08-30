@@ -22,20 +22,10 @@ public class User extends Thing {
 
 	private String username, password;
 	private String modhash, cookie;
-	// Comments made by this user
-	private List<Comment> comments;
-	// Links submitted by this user
-	private List<Submission> submissions;
-	// Links like by this user
-	private List<String> liked;
 	// Links disliked by this user
 	private List<String> disliked;
 	// Links hidden by this user
 	private List<String> hidden;
-	// How much link karma this user has
-	private Integer linkKarma;
-	// How much comment karma this user has
-	private Integer commentKarma;
 	// When the account was created
 	private String createdDate;
 
@@ -158,14 +148,8 @@ public class User extends Thing {
 	 * @throws ParseException If JSON parsing fails
 	 */
 	public int linkKarma() throws IOException, ParseException {
-		// Only send a new request if we don't already have the link linkKarma.
-		if (linkKarma == null) {
-			// Safely convert to a string 
-			linkKarma = Integer.parseInt(toString(info().get("link_karma")));
-		}
-
 		// Return the link linkKarma
-		return linkKarma;
+		return Integer.parseInt(toString(info().get("link_karma")));
 	}
 
 	/**
@@ -180,14 +164,8 @@ public class User extends Thing {
 	 * @throws ParseException If JSON parsing fails
 	 */
 	public int commentKarma() throws IOException, ParseException {
-		// Only send a new request if we don't already have the link linkKarma.
-		if (commentKarma == null) {
-			// Safely convert to a string
-			commentKarma = Integer.parseInt(toString(info().get("comment_karma")));
-		}
-
 		// Return comment karma
-		return commentKarma;
+		return Integer.parseInt(toString(info().get("comment_karma")));
 	}
 
 	/**
@@ -331,11 +309,9 @@ public class User extends Thing {
 	 * <code>List</code> of submissions made by this user.
 	 * @author Benjamin Jakobus
 	 */
-	public List<Comment> getComments() {
-		if (comments == null) {
-			comments = User.getComments(username, getCookie());
-		}
-		return comments;
+	public List<Comment> comments() {
+		// Return liked
+		return User.comments(username, getCookie());
 	}
 
 	/**
@@ -384,11 +360,11 @@ public class User extends Thing {
 	 * @param cookie	The cookie associated with the account that you used to
 	 * connect to reddit.
 	 * @return
-	 * <code>List</code> of comments made by this user.
+	 * <code>List</code> of liked made by this user.
 	 *
 	 * @author Benjamin Jakobus
 	 */
-	public static List<Comment> getComments(String username, String cookie) {
+	public static List<Comment> comments(String username, String cookie) {
 		// List of submissions made by this user
 		List<Comment> comments = new ArrayList<Comment>(500);
 		try {
@@ -434,7 +410,7 @@ public class User extends Thing {
 	 *
 	 * @author Benjamin Jakobus
 	 */
-	public static List<Submission> getSubmissions(String username, String cookie) {
+	public static List<Submission> submissions(String username, String cookie) {
 		// List of submissions made by this user
 		List<Submission> submissions = new ArrayList<Submission>(500);
 		try {
@@ -473,6 +449,51 @@ public class User extends Thing {
 
 		// Return the submissions
 		return submissions;
+	}
+
+	/**
+	 * Returns a list of submissions that this user liked.
+	 *
+	 * @return	List of liked links.
+	 * @author Benjamin Jakobus
+	 */
+	public List<Submission> liked() {
+		// List of submissions made by this user
+		List<Submission> liked = new ArrayList<Submission>(500);
+		try {
+			// Send GET request to get the account overview
+			JSONObject object = (JSONObject) Utils.get("", new URL(
+					"http://www.reddit.com/user/" + username + "/liked.json"), cookie);
+			JSONObject data = (JSONObject) object.get("data");
+			JSONArray children = (JSONArray) data.get("children");
+
+			JSONObject obj;
+			Submission s;
+			for (int i = 0; i < children.size(); i++) {
+				// Get the object containing the comment
+				obj = (JSONObject) children.get(i);
+				obj = (JSONObject) obj.get("data");
+
+				// Create a new comment
+				s = new Submission();
+				s.setAuthor(toString(obj.get("author")));
+				s.setTitle(toString(obj.get("title")));
+				s.setOver18(Boolean.parseBoolean(toString(obj.get("over_18"))));
+				s.setCreatedUTC(Float.parseFloat(toString(obj.get("created_utc"))));
+				s.setDownVotes(Integer.parseInt(toString(obj.get("downs"))));
+				s.setName(toString(obj.get("name")));
+				s.setScore(Integer.parseInt(toString(obj.get("score"))));
+				s.setUpVotes(Integer.parseInt(toString(obj.get("ups"))));
+				s.setNumComments(Integer.parseInt(toString(obj.get("num_comments"))));
+				// Add it to the submissions list
+				liked.add(s);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// Return the submissions
+		return liked;
 	}
 
 	/**

@@ -132,6 +132,9 @@ public class Submission extends Thing {
 	 *             If JSON parsing fails
 	 */
 	public String getAuthor() throws IOException, ParseException {
+		if (author != null) {
+			return author;
+		}
 		if (url == null)
 			throw new IOException("URL needs to be present");
 
@@ -148,6 +151,10 @@ public class Submission extends Thing {
 	 *             If JSON parsing fails
 	 */
 	public String getTitle() throws IOException, ParseException {
+		if (title != null) {
+			return title;
+		}
+		
 		if (url == null)
 			throw new IOException("URL needs to be present");
 
@@ -165,6 +172,9 @@ public class Submission extends Thing {
 	 *             If JSON parsing fails
 	 */
 	public String getSubreddit() throws IOException, ParseException {
+		if (subreddit != null) {
+			return subreddit;
+		}
 		if (url == null)
 			throw new IOException("URL needs to be present");
 
@@ -181,6 +191,9 @@ public class Submission extends Thing {
 	 *             If the JSON parsing fails
 	 */
 	public int getScore() throws IOException, ParseException {
+		if (score != null) {
+			return score;
+		}
 		if (url == null)
 			throw new IOException("URL needs to be present");
 
@@ -197,6 +210,9 @@ public class Submission extends Thing {
 	 *             If the JSON parsing fails
 	 */
 	public int upVotes() throws IOException, ParseException {
+		if (upVotes != null) {
+			return upVotes;
+		}
 		if (url == null)
 			throw new IOException("URL needs to be present");
 
@@ -213,6 +229,9 @@ public class Submission extends Thing {
 	 *             If the JSON parsing fails
 	 */
 	public int downVotes() throws IOException, ParseException {
+		if (downVotes != null) {
+			return downVotes;
+		}
 		if (url == null)
 			throw new IOException("URL needs to be present");
 
@@ -229,6 +248,9 @@ public class Submission extends Thing {
 	 *             If JSON parsing fails
 	 */
 	public boolean isNSFW() throws IOException, ParseException {
+		if (over18 != null) {
+			return over18;
+		}
 		if (url == null)
 			throw new IOException("URL needs to be present");
 
@@ -261,14 +283,12 @@ public class Submission extends Thing {
 	 *             If the JSON parsing fails
 	 */
 	public int commentCount() throws IOException, ParseException {
+		if (numComments != null) {
+			return numComments;
+		}
 		if (url == null)
 			throw new IOException("URL needs to be present");
-
-		// Only send a request if number of comments hasn't already been fetched
-		if (numComments == null) {
-			numComments = Integer.parseInt(info(url).get("num_comments").toString());
-		}
-		return numComments;
+		return Integer.parseInt(info(url).get("num_comments").toString());
 	}
 
 	/**
@@ -353,6 +373,14 @@ public class Submission extends Thing {
 		obj = (JSONObject) array.get(0);
 		obj = (JSONObject) obj.get("data");
 		return (JSONObject) obj;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public Float getCreatedUTC() {
+		return createdUTC;
 	}
 
 	@Override
