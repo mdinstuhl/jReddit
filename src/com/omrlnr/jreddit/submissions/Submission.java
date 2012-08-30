@@ -379,7 +379,10 @@ public class Submission extends Thing {
 		return name;
 	}
 
-	public Float getCreatedUTC() {
+	public Float getCreatedUTC() throws IOException, ParseException {
+		if (createdUTC == null) {
+			createdUTC = Float.parseFloat(info(url).get("created_utc").toString());
+		}
 		return createdUTC;
 	}
 
