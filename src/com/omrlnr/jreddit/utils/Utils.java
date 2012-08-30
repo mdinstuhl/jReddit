@@ -64,7 +64,10 @@ public class Utils {
 		connection.setDoOutput(true);
 		connection.setUseCaches(false);
 		connection.setRequestMethod("GET");
-		connection.setRequestProperty("cookie", "reddit_session=" + cookie);
+		// Don't pass cookie if it is null
+		if (cookie != null) {
+			connection.setRequestProperty("cookie", "reddit_session=" + cookie);
+		}
 		connection.setRequestProperty("User-Agent", userAgent);
 
 		JSONParser parser = new JSONParser();
