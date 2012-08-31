@@ -84,10 +84,22 @@ public class Utils {
 //		return jsonObject;
 	}
 
+	/**
+	 * Returns the user agent string used when sending requests to Reddit.com.
+	 * Note: The user-agent identifies the client software originating the HTTP request.
+	 * 
+	 * @return				The user agent string used when sending requests to Reddit.com.
+	 */
 	public static String getUserAgent() {
 		return userAgent;
 	}
 
+	/**
+	 * Sets the user agent string.
+	 * Note: The user-agent identifies the client software originating the HTTP request.
+	 * 
+	 * @param agent			User agent string.
+	 */
 	public static void setUserAgent(String agent) {
 		userAgent = agent;
 	}
