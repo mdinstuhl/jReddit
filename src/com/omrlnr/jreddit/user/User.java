@@ -423,7 +423,7 @@ public class User extends Thing {
 				s.setAuthor(toString(obj.get("author")));
 				s.setTitle(toString(obj.get("title")));
 				s.setOver18(Boolean.parseBoolean(toString(obj.get("over_18"))));
-				s.setCreatedUTC(Float.parseFloat(toString(obj.get("created_utc"))));
+				s.setCreatedUTC(Long.parseLong(toString(obj.get("created_utc"))));
 				s.setDownVotes(Integer.parseInt(toString(obj.get("downs"))));
 				s.setName(toString(obj.get("name")));
 				s.setScore(Integer.parseInt(toString(obj.get("score"))));
@@ -468,7 +468,7 @@ public class User extends Thing {
 				s.setAuthor(toString(obj.get("author")));
 				s.setTitle(toString(obj.get("title")));
 				s.setOver18(Boolean.parseBoolean(toString(obj.get("over_18"))));
-				s.setCreatedUTC(Float.parseFloat(toString(obj.get("created_utc"))));
+				s.setCreatedUTC(Long.parseLong(toString(obj.get("created_utc"))));
 				s.setDownVotes(Integer.parseInt(toString(obj.get("downs"))));
 				s.setName(toString(obj.get("name")));
 				s.setScore(Integer.parseInt(toString(obj.get("score"))));
@@ -513,7 +513,7 @@ public class User extends Thing {
 				s.setAuthor(toString(obj.get("author")));
 				s.setTitle(toString(obj.get("title")));
 				s.setOver18(Boolean.parseBoolean(toString(obj.get("over_18"))));
-				s.setCreatedUTC(Float.parseFloat(toString(obj.get("created_utc"))));
+				s.setCreatedUTC(Long.parseLong(toString(obj.get("created_utc"))));
 				s.setDownVotes(Integer.parseInt(toString(obj.get("downs"))));
 				s.setName(toString(obj.get("name")));
 				s.setScore(Integer.parseInt(toString(obj.get("score"))));
@@ -558,7 +558,7 @@ public class User extends Thing {
 				s.setAuthor(toString(obj.get("author")));
 				s.setTitle(toString(obj.get("title")));
 				s.setOver18(Boolean.parseBoolean(toString(obj.get("over_18"))));
-				s.setCreatedUTC(Float.parseFloat(toString(obj.get("created_utc"))));
+				s.setCreatedUTC(Long.parseLong(toString(obj.get("created_utc"))));
 				s.setDownVotes(Integer.parseInt(toString(obj.get("downs"))));
 				s.setName(toString(obj.get("name")));
 				s.setScore(Integer.parseInt(toString(obj.get("score"))));

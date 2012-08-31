@@ -26,7 +26,7 @@ public class Submission extends Thing {
 	 */
 	private URL url;
 	
-	private Float createdUTC;
+	private Long createdUTC;
 	private String author;
 	private String title;
 	private Boolean over18;
@@ -52,7 +52,7 @@ public class Submission extends Thing {
 		this.author = author;
 	}
 
-	public void setCreatedUTC(float createdUTC) {
+	public void setCreatedUTC(long createdUTC) {
 		this.createdUTC = createdUTC;
 	}
 
@@ -182,7 +182,8 @@ public class Submission extends Thing {
 	}
 
 	/**
-	 * This function returns the score of this sumbission.
+	 * This function returns the score of this sumbission (issues a new GET request
+	 * to Reddit.com).
 	 * 
 	 * @return The score of this submission
 	 * @throws IOException
@@ -190,15 +191,23 @@ public class Submission extends Thing {
 	 * @throws ParseException
 	 *             If the JSON parsing fails
 	 */
-	public int getScore() throws IOException, ParseException {
-		if (score != null) {
-			return score;
-		}
+	public int score() throws IOException, ParseException {
 		if (url == null)
 			throw new IOException("URL needs to be present");
 
 		return Integer.parseInt(info(url).get("score").toString());
 	}
+
+	/**
+	 * This function returns the score of this sumbission (does not issue a new GET request
+	 * to Reddit.com but instead returns the private member).
+	 * 
+	 * @return The score of this submission
+	 */
+	public Integer getScore() {
+		return score;
+	}
+	
 
 	/**
 	 * This function returns the number of upvotes of this sumbission.
@@ -379,9 +388,9 @@ public class Submission extends Thing {
 		return name;
 	}
 
-	public Float getCreatedUTC() throws IOException, ParseException {
+	public Long getCreatedUTC() throws IOException, ParseException {
 		if (createdUTC == null) {
-			createdUTC = Float.parseFloat(info(url).get("created_utc").toString());
+			createdUTC = Long.parseLong(info(url).get("created_utc").toString());
 		}
 		return createdUTC;
 	}
@@ -389,7 +398,7 @@ public class Submission extends Thing {
 	@Override
 	public String toString() {
 		try {
-			return "(" + getScore() + ") " + getTitle();
+			return "(" + score() + ") " + getTitle();
 		} catch (Exception exception) {
 			exception.printStackTrace();
 		}
