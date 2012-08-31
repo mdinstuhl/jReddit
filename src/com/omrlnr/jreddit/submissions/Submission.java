@@ -26,7 +26,7 @@ public class Submission extends Thing {
 	 */
 	private URL url;
 	
-	private Long createdUTC;
+	private Double createdUTC;
 	private String author;
 	private String title;
 	private Boolean over18;
@@ -52,7 +52,7 @@ public class Submission extends Thing {
 		this.author = author;
 	}
 
-	public void setCreatedUTC(long createdUTC) {
+	public void setCreatedUTC(double createdUTC) {
 		this.createdUTC = createdUTC;
 	}
 
@@ -388,9 +388,9 @@ public class Submission extends Thing {
 		return name;
 	}
 
-	public Long getCreatedUTC() throws IOException, ParseException {
+	public Double getCreatedUTC() throws IOException, ParseException {
 		if (createdUTC == null) {
-			createdUTC = Long.parseLong(info(url).get("created_utc").toString());
+			createdUTC = Double.parseDouble(info(url).get("created_utc").toString());
 		}
 		return createdUTC;
 	}
