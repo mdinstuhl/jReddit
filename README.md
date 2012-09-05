@@ -149,6 +149,7 @@ List all submissions made by user called USERNAME_OF_OTHER_USER
         		user.connect();
 
         		List<Submission> submissions = User.submissions("USERNAME_OF_OTHER_USER");
+        		// To list hidden submissions, user User.hidden("...");
 		
 			for (Submission s : submissions) {
 				// Print info here
