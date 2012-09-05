@@ -88,3 +88,28 @@ Submit a link and self post
 					"One of its legs are both the same!", "funny");
 		}
 	}
+	
+List the subreddits that make up the default front page of reddit
+
+	import com.omrlnr.jreddit.submissions.Submission;
+	import com.omrlnr.jreddit.user.User;
+	import com.omrlnr.jreddit.subreddit.Subreddit;
+	import com.omrlnr.jreddit.subreddit.Subreddits;
+	
+	/**
+	 * @author Benjamin Jakobus
+	 */
+	public final class Test {
+		public static void main(String[] args) throws Exception {
+			User user = new User("username", "password");
+			user.connect();
+		
+			List<Subreddit> subreddits = Subreddits.list(user, "popular");
+			// Alternativly use: Subreddits.listDefault(user);
+			
+			for (Subreddit sr : subreddits) {
+				System.out.println(sr.getUrl() + " " + sr.getTitle());
+			}
+		
+		}
+	}
