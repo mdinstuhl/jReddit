@@ -113,3 +113,46 @@ List the subreddits that make up the default front page of reddit
 		
 		}
 	}
+
+List all comments made by user called USERNAME_OF_OTHER_USER
+
+	import com.omrlnr.jreddit.user.Comment;
+	import com.omrlnr.jreddit.user.User;
+	
+	/**
+	 * @author Benjamin Jakobus
+	 */
+	public final class Test {
+		public static void main(String[] args) throws Exception {
+			User user = new User("username", "password");
+        		user.connect();
+
+        		List<Comment> comments = User.comments("USERNAME_OF_OTHER_USER");
+		
+			for (Comment c : comments) {
+				System.out.println(c.getComment());
+			}
+		}
+	}
+	
+List all submissions made by user called USERNAME_OF_OTHER_USER
+
+	import com.omrlnr.jreddit.submissions.Submission;
+	import com.omrlnr.jreddit.user.User;
+	
+	/**
+	 * @author Benjamin Jakobus
+	 */
+	public final class Test {
+		public static void main(String[] args) throws Exception {
+			User user = new User("username", "password");
+        		user.connect();
+
+        		List<Submission> submissions = User.submissions("USERNAME_OF_OTHER_USER");
+		
+			for (Submission s : submissions) {
+				// Print info here
+			}
+		}
+	}
+
