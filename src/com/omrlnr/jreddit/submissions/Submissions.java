@@ -31,14 +31,14 @@ public class Submissions {
      *
      * @param redditName The subreddit's name
      * @param type       HOT or NEW and some others to come
-     * @param page       TODO this
+     * @param frontpage       TODO this
      * @param user       The user
      * @return The linked list containing submissions
      * @throws IOException    If connection fails
      * @throws ParseException If JSON parsing fails
      */
     public static LinkedList<Submission> getSubmissions(String redditName,
-                                                        Popularity type, int page, User user) throws IOException, ParseException {
+                                                        Popularity type, Page frontpage, User user) throws IOException, ParseException {
         LinkedList<Submission> submissions = new LinkedList<Submission>();
         URL url;
         String urlString = "http://www.reddit.com/r/" + redditName;

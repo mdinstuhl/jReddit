@@ -16,13 +16,13 @@ public final class GenerousBot {
 
 		Utils.setUserAgent("Generous-Bot");
 
-		User user = new User("username", "password");
+		User user = new User("user", "password");
 		user.connect();
 
 		for (int i = 0; i < subreddits.length; i++) {
 			for (Submission submission : Submissions
-					.getSubmissions(subreddits[i], Submissions.NEW,
-							Submissions.FRONTPAGE, user)) {
+					.getSubmissions(subreddits[i], Submissions.Popularity.NEW,
+							Submissions.Page.FRONTPAGE, user)) {
 				submission.upVote();
 			}
 		}
