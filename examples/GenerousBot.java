@@ -1,5 +1,7 @@
 import com.omrlnr.jreddit.submissions.Submission;
 import com.omrlnr.jreddit.submissions.Submissions;
+import com.omrlnr.jreddit.submissions.Submissions.Page;
+import com.omrlnr.jreddit.submissions.Submissions.Popularity;
 import com.omrlnr.jreddit.user.User;
 
 import com.omrlnr.jreddit.utils.Utils;
@@ -21,8 +23,8 @@ public final class GenerousBot {
 
 		for (int i = 0; i < subreddits.length; i++) {
 			for (Submission submission : Submissions
-					.getSubmissions(subreddits[i], Submissions.Popularity.NEW,
-							Submissions.Page.FRONTPAGE, user)) {
+					.getSubmissions(subreddits[i], Popularity.NEW,
+							Page.FRONTPAGE, user)) {
 				submission.upVote();
 			}
 		}
