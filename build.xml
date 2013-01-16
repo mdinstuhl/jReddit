@@ -1,0 +1,51 @@
+<project name="jReddit" default="package" basedir=".">
+  <property name="src" location="src" />
+  <property name="build" location="build" />
+  <property name="dist" location="dist" />
+  <property name="java.lib" location="/usr/share/java" /> <!-- Edit this for your local system -->
+
+  <path id="classpath">
+    <fileset dir="lib">
+      <include name="*.jar" />
+    </fileset>
+  </path>
+  <path id="junit">
+    <fileset dir="${java.lib}">
+      <include name="*.jar" />
+    </fileset>
+  </path>
+  <path id="tests">
+    <fileset dir="tests">
+      <include name="*Test.java" />
+    </fileset>
+  </path>
+  <path id="application" location="${dist}/jreddit.jar" />
+    
+  <target name="clean">
+    <delete dir="${build}" />
+    <delete dir="${dist}" />
+  </target>
+  <target name="compile" depends="clean">
+    <mkdir dir="${build}" />
+    <javac srcdir="${src}" destdir="${build}" includeantruntime="false">
+      <classpath refid="classpath" />
+      <classpath refid="junit" />
+    </javac>
+  </target>
+  <target name="package" depends="compile">
+    <tstamp />
+    <mkdir dir="${dist}" />
+    <jar destfile="${dist}/jreddit.jar" basedir="${build}" />
+  </target>
+  <target name="test" depends="package">
+    <junit printsummary="yes" showoutput="true" haltOnError="true">
+      <classpath>
+        <path refid="classpath" />
+        <path refid="application" />
+      </classpath>
+      <batchtest fork="yes">
+        <fileset dir="${src}/tests" includes="*Test.java" />
+      </batchtest>
+    </junit>
+  </target>
+</project>

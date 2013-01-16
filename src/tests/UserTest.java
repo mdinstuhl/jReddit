@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import com.omrlnr.jreddit.user.User;
 
-public class UserTest {
+public class UserTest extends junit.framework.TestCase{
 	@Test
 	public void test() {
 		// Don't hax meh plz
