@@ -2,9 +2,8 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.omrlnr.jreddit.subreddit;
+package com.omrlnr.jreddit.domain;
 
-import com.omrlnr.jreddit.user.User;
 import com.omrlnr.jreddit.utils.Utils;
 
 import java.net.URL;
