@@ -2,7 +2,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.omrlnr.jreddit.user.User;
+import com.omrlnr.jreddit.domain.User;
 
 public class UserTest extends junit.framework.TestCase{
 	@Test

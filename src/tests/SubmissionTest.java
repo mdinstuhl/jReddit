@@ -4,9 +4,7 @@ import java.util.LinkedList;
 
 import org.junit.Test;
 
-import com.omrlnr.jreddit.submissions.Submission;
-import com.omrlnr.jreddit.submissions.Submissions;
-import com.omrlnr.jreddit.user.User;
+import com.omrlnr.jreddit.domain.*;
 
 public class SubmissionTest extends junit.framework.TestCase {
 	@Test
